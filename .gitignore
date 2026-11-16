@@ -8,3 +8,6 @@ state.json
 *.zip
 .env
 .env.*
+
+# Optional in-checkout private case workspace; prefer a separate non-public directory.
+/.private-work/

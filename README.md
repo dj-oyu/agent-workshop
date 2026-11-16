@@ -19,9 +19,13 @@ sh restore.sh /path/to/state.json
 
 ```sh
 python3 -m unittest -v
-python3 loop.py init demo-state.json --plan example.json
-python3 loop.py run demo-state.json
-sh restore.sh demo-state.json
+# 本体と案件データを分離する。既存ファイルを上書きしない新規ディレクトリを使用。
+HARNESS="$(pwd -P)"
+CASE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/problem-loop-demo.XXXXXX")"
+cp "$HARNESS/example.json" "$CASE_DIR/plan.json"
+python3 "$HARNESS/loop.py" init "$CASE_DIR/state.json" --plan "$CASE_DIR/plan.json"
+python3 "$HARNESS/loop.py" run "$CASE_DIR/state.json"
+sh "$HARNESS/restore.sh" "$CASE_DIR/state.json"
 ```
 
 `run` は依存関係の解決した工程を選び、実行結果を保存し、検証成功したときだけ次工程に進みます。既定20工程でcheckpoint停止。`--steps 1` なら1工程ずつ。同じコマンドでpending工程から再開します。行動失敗は副作用不明のunknownとなり再送しません。副作用がない/安全に再試行可能と確認した工程のみ `safe_retry: true` を明示するとstalledになります。独立工程は続行します。
@@ -54,7 +58,16 @@ unlockは記録されたPIDが存在しない場合のみ可能。別マシン�
 
 ## 保存と引き継ぎ
 
-コード、PLAYBOOK、plan、state、`*-logs`を一緒に管理します。運用stateやログに秘密が入る可能性があるため、公開Gitには自動追加しません。プログラム本体はGitやLibraryに保存できる独立した資産です。zipとSHA256SUMSで受渡可能です。実行環境の消失に備え、ローカルに置いただけで永続保存済みとは扱わないでください。
+公開する本体（コード・一般化した手順・架空テスト）と、非公開の案件（plan・state・入力・成果物・ログ・request/response）を別ディレクトリで管理します。**実案件は原則として公開checkoutの外へ置いてください。** `loop.py init` の作業rootはplanのあるディレクトリなので、stateだけを外へ置かず、planとstateを同じ案件ディレクトリへ置きます。
+
+`.gitignore` は秘密情報検出やアクセス制御ではありません。任意名の `plan.json`、入力ファイル、メモなどを漏れなく判定できず、既に追跡済みのファイルや `git add -f` も防げません。公開checkout内を使う必要がある場合に限り、全内容を無視する専用 `.private-work/` 配下へ案件一式を置きます。このディレクトリ名は補助策であり、暗号化や非公開ストレージを意味しません。
+
+```text
+public/problem-loop-harness/  # 公開する本体のみ
+private/case-name/            # 別の非公開作業場所: plan.json, state.json, 入力, 成果物, ログ
+```
+
+公開時は変更した本体ファイルを個別に指定し、`git diff --cached --name-only` と `git diff --cached` で対象と内容を確認します。案件ディレクトリを一括追加しないでください。checkpointも内容を点検し、許可された非公開の保存先へ保存・再取得確認します。上記デモの一時ディレクトリは永続保存先ではありません。プログラム本体はGitやLibraryに保存できる独立した資産です。zipとSHA256SUMSで受渡可能です。実行環境の消失に備え、ローカルに置いただけで永続保存済みとは扱わないでください。
 
 ## 境界
 
