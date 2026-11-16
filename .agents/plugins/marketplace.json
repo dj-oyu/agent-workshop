@@ -1,0 +1,12 @@
+{
+  "name": "agent-workshop",
+  "plugins": [
+    {
+      "name": "agent-workshop",
+      "source": {
+        "source": "local",
+        "path": "./.agents"
+      }
+    }
+  ]
+}

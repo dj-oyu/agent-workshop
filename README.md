@@ -34,3 +34,37 @@ repo内で利用するときは追加コピー不要です。Codexがこのrepo�
 ## 検証の範囲
 
 Pythonのテスト・一時プロジェクトへの再配置・ハッシュ一致を検証します。実Codexセッションでの発見・暗黙選択は別工程であり、ファイル配置テストだけで成功とは主張しません。skillはschedulerやsandboxではありません。実案件を継続するには許可済み実行環境と永続wakeへの接続が必要です。private state・モデル・ログは公開repoの外に置いてください。
+
+## Codex plugin marketplace から追加
+
+このrepoはskillコレクション兼Git marketplaceです。マーケットプレイスには
+`https://github.com/dj-oyu/agent-workshop` を追加し、一覧の `agent-workshop` をインストールします。
+CLIでは次の操作に相当します。
+
+```sh
+codex plugin marketplace add dj-oyu/agent-workshop
+codex plugin add agent-workshop@agent-workshop
+codex plugin list --json
+```
+
+以前の `marketplace root does not contain a supported manifest` はmarketplace定義が
+存在しなかったためです。追加に失敗した場合は上記URLで再度追加してください。
+既に登録済みなら `codex plugin marketplace upgrade agent-workshop` で更新します。
+
+`.agents/plugins/marketplace.json` がrepo rootから見つかるmarketplace入口です。
+配布pluginのrootは `.agents/`、skillの唯一のソースは引き続き
+`.agents/skills/problem-loop-harness/` です。rootのportable `plugin.json` と
+`.codex-plugin/plugin.json` 互換manifestが同じskillを参照するため、複製やsymlinkは不要です。
+repo root自体をskillとして扱いません。今後のskillも `skills/<skill-name>/` 単位で追加できます。
+plugin登録は実行権限の追加や自動スケジュールの作成を意味しません。
+
+### Marketplace 回帰検証
+
+```sh
+python3 -m unittest discover -s tests -v
+```
+
+Codex CLIが必要です。使い捨て `CODEX_HOME` で実際のmarketplace読込、plugin install、
+有効化一覧、インストールされたskillのSHA-256、および20件のruntime testを検証します。
+CLIがなければskipになり、成功の証明とは扱いません。
+LinuxのCodex CLI 0.167.0-alpha.4で確認済みです。Windows版のGUIでの追加は未検証です。

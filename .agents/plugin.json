@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agent-workshop",
+  "version": "0.1.0",
+  "description": "Evidence-driven problem-solving skills and resumable execution harnesses.",
+  "author": {
+    "name": "dj-oyu"
+  }
+}
