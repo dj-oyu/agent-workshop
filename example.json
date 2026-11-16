@@ -1,0 +1,44 @@
+{
+  "goal": "成果を作成して利用側から検証する",
+  "done_when": "2工程それぞれのファイル内容が検証済み",
+  "tasks": [
+    {
+      "id": "prepare",
+      "owner": "local-runner",
+      "next_action": "prepare の生成と内容検証",
+      "authorized": true,
+      "depends": [],
+      "command": [
+        "python3",
+        "-c",
+        "from pathlib import Path; Path('demo-prepare.txt').write_text('verified')"
+      ],
+      "verify": [
+        "python3",
+        "-c",
+        "from pathlib import Path; assert Path('demo-prepare.txt').read_text()=='verified'"
+      ],
+      "timeout": 10
+    },
+    {
+      "id": "consume",
+      "owner": "local-runner",
+      "next_action": "consume の生成と内容検証",
+      "authorized": true,
+      "depends": [
+        "prepare"
+      ],
+      "command": [
+        "python3",
+        "-c",
+        "from pathlib import Path; Path('demo-consume.txt').write_text('verified')"
+      ],
+      "verify": [
+        "python3",
+        "-c",
+        "from pathlib import Path; assert Path('demo-consume.txt').read_text()=='verified'"
+      ],
+      "timeout": 10
+    }
+  ]
+}

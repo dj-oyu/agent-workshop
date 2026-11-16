@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*-state.json
+state.json
+*-logs/
+*-request.json
+*-response.json
+*.zip
+.env
+.env.*

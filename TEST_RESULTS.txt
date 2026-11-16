@@ -1,0 +1,22 @@
+test_failure_reflection_revision_execution (test_adaptive.AdaptiveTest.test_failure_reflection_revision_execution) ... ok
+test_stale_planner_rejected (test_adaptive.AdaptiveTest.test_stale_planner_rejected) ... ok
+test_apply_once_and_match_id (test_bridge.BridgeTest.test_apply_once_and_match_id) ... ok
+test_stale_refused (test_bridge.BridgeTest.test_stale_refused) ... ok
+test_empty_directory_restore_pending_only (test_checkpoint.CheckpointTests.test_empty_directory_restore_pending_only) ... ok
+test_missing_artifact_never_done (test_checkpoint.CheckpointTests.test_missing_artifact_never_done) ... ok
+test_no_overwrite (test_checkpoint.CheckpointTests.test_no_overwrite) ... ok
+test_tamper (test_checkpoint.CheckpointTests.test_tamper) ... ok
+test_traversal (test_checkpoint.CheckpointTests.test_traversal) ... ok
+test_missing_authorization (test_loop.HarnessTests.test_missing_authorization) ... ok
+test_multicycle_resume (test_loop.HarnessTests.test_multicycle_resume) ... ok
+test_no_overwrite (test_loop.HarnessTests.test_no_overwrite) ... ok
+test_real_crash_reconciliation (test_loop.HarnessTests.test_real_crash_reconciliation) ... ok
+test_stall_no_repeat_independent_continues (test_loop.HarnessTests.test_stall_no_repeat_independent_continues) ... ok
+test_adaptive_stop_is_persistent (test_stop.StopTests.test_adaptive_stop_is_persistent) ... ok
+test_bridge_stop_survives_new_process_and_continue (test_stop.StopTests.test_bridge_stop_survives_new_process_and_continue) ... ok
+test_checkpoint_preserves_stop (test_stop.StopTests.test_checkpoint_preserves_stop) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 1.411s
+
+OK
